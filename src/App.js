@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import './App.css'
 
-function App() {
+const api = {
+  base: "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY"
+};
+
+export const App = () => {
+  const [query, setQuery] = useState(''); 
+  const [nasa, setNasa] = useState({}); 
+
+  const search = (evt) => {
+      fetch(`${api.base}`)
+      .then(res => res.json()) 
+      .then(result => {
+        setNasa(result); 
+        setQuery(''); 
+        console.log(result);
+       
+      });
+    
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+<div className="container">
+  <div>
+    <h1>astronomy picture of the day</h1>
+  <button onClick={search} value={query} onChange={e => setQuery(e.target.value)}>Click for results</button>
+  <img src={nasa.hdurl} />
+  <div className="mainelement">{nasa.explanation}</div>
+</div>
+{(typeof nasa.main != "undefined") ? (
+  <div></div> // empty div to trigger typeof function method 
+
+  ) : ('')}
+
+</div>
+    
+  )
 }
 
 export default App;
